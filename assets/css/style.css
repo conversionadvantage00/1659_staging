@@ -1,0 +1,587 @@
+/* 1659 Wine Time, v3. Look taken from Megan's staged site: near-black, Baskerville, white type, red and gold accents. */
+:root{
+  --bg:#000; --ink:#fff; --grey:#A9A49C;
+  --red:#BA0C2F; --gold:#86754D; --gold-text:#B09A66; /* gold-text is a lighter tint of the brand gold, for small text on dark */
+  --serif:'Baskervville','Baskerville','Baskerville Old Face',Georgia,serif;
+  --pad:clamp(20px,5vw,72px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);scroll-behavior:auto}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+h1,h2,h3{font-weight:400;line-height:1.08}
+.eyebrow{font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold-text)}
+
+/* buttons: hairline, one family */
+.btn{display:inline-block;padding:15px 30px;border:1px solid rgba(255,255,255,.7);font-size:12px;letter-spacing:.24em;text-transform:uppercase;transition:background .35s,color .35s,border-color .35s}
+.btn:hover,.btn:focus-visible{background:#fff;color:var(--bg);border-color:#fff}
+.btn--ghost{border-color:rgba(255,255,255,.45)}
+.btn--solid{background:var(--red);border-color:var(--red)}
+.btn--solid:hover{background:#fff;color:var(--bg);border-color:#fff}
+:focus-visible{outline:2px solid var(--gold-text);outline-offset:3px}
+
+/* no z-index on main on purpose: it stays in the same stacking context as the glow, so the hero image can blend with it */
+main,.foot{position:relative}
+
+/* NAV */
+.nav{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px var(--pad);transition:background .4s,transform .4s cubic-bezier(.3,.7,.2,1)}
+.nav::before{content:"";position:absolute;left:0;right:0;top:0;bottom:-34px;z-index:-1;pointer-events:none;opacity:0;transition:opacity .4s;background:linear-gradient(rgba(0,0,0,.92) 0,rgba(0,0,0,.82) 52%,rgba(0,0,0,.45) 76%,transparent 100%)}
+.nav.is-solid::before{opacity:1}
+.nav.is-hidden{transform:translateY(-100%)}
+.nav__logo img{height:54px;width:auto}
+.nav__links{display:flex;gap:34px;align-items:center;font-size:12px;letter-spacing:.24em;text-transform:uppercase}
+.nav__links a{opacity:.85;transition:opacity .3s}
+.nav__links a:hover{opacity:1}
+.nav__cta{border:1px solid rgba(255,255,255,.6);padding:11px 20px}
+.nav__burger{display:none;width:44px;height:44px;position:relative}
+.nav__burger span{position:absolute;left:10px;right:10px;height:1px;background:#fff;transition:transform .4s,top .4s}
+.nav__burger span:nth-child(1){top:19px}.nav__burger span:nth-child(2){top:25px}
+.nav__burger[aria-expanded=true] span:nth-child(1){top:22px;transform:rotate(45deg)}
+.nav__burger[aria-expanded=true] span:nth-child(2){top:22px;transform:rotate(-45deg)}
+.menu{position:fixed;inset:0;z-index:40;background:var(--bg);display:flex;flex-direction:column;justify-content:center;gap:22px;padding:0 var(--pad);clip-path:inset(0 0 100% 0);transition:clip-path .7s cubic-bezier(.7,0,.2,1);visibility:hidden}
+.menu.open{clip-path:inset(0);visibility:visible}
+.menu a{font-size:clamp(34px,9vw,60px)}
+
+/* HERO */
+.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-start;position:relative;overflow:hidden}
+.hero__img{width:100%;max-width:1700px;margin:0 auto;position:relative;mix-blend-mode:lighten}
+.hero__img img{width:100%;height:auto;transform-origin:50% 40%;will-change:transform}
+.hero__text{text-align:center;padding:clamp(10px,3vh,40px) var(--pad) 90px;margin-top:auto}
+.hero__line{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-text)}
+.hero__line--big{font-size:clamp(30px,5vw,72px);letter-spacing:0;text-transform:none;color:#fff;margin-top:10px}
+.hero__line--big em{color:var(--grey)}
+.hero__cue{position:absolute;left:50%;bottom:26px;width:1px;height:56px;background:rgba(255,255,255,.25);overflow:hidden}
+.hero__cue span{position:absolute;inset:0;background:#fff;animation:cue 2.2s ease-in-out infinite}
+@keyframes cue{0%{transform:translateY(-100%)}60%,100%{transform:translateY(100%)}}
+
+/* WINE TIME SLIDER */
+.wt{position:relative;overflow:hidden;min-height:100svh;background:var(--bg);--ink-shadow:0 1px 18px rgba(0,0,0,.4)}
+.wt__scene{position:absolute;left:0;top:0;z-index:0;display:block;pointer-events:none}
+.wt__vig{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 78% 68% at 42% 46%,transparent 42%,rgba(0,0,0,.66) 100%),linear-gradient(180deg,rgba(0,0,0,.3),transparent 26%)}
+.wt__grain{position:absolute;inset:-50px;z-index:2;pointer-events:none;opacity:.17;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .7 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation:grain 1.1s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}17%{transform:translate(-18px,12px)}33%{transform:translate(14px,-22px)}50%{transform:translate(-24px,-8px)}67%{transform:translate(20px,18px)}83%{transform:translate(-10px,24px)}100%{transform:translate(0,0)}}
+.rm .wt__grain{animation:none}
+.wt__inner{position:relative;z-index:3;min-height:100svh;display:grid;gap:0 clamp(16px,3vw,48px);padding:clamp(104px,11.6vh,140px) var(--pad) 8px;
+  grid-template-columns:1fr minmax(200px,.8fr) 1.3fr;grid-template-rows:auto 1fr auto;
+  grid-template-areas:"head head card" "clock bottle card" "slider slider slider";align-items:center}
+.wt__head{grid-area:head;text-shadow:var(--ink-shadow);margin-top:clamp(40px,6.5vh,84px)}
+.wt__head .eyebrow{color:#fff;opacity:1;font-size:clamp(14px,1.5vw,22px);letter-spacing:.26em}
+.eb-word{display:inline-block;overflow:hidden;vertical-align:top;white-space:nowrap;padding-bottom:.18em;margin-bottom:-.18em}
+.eb-ch{display:inline-block;will-change:transform}
+.wt__head h2{font-size:clamp(34px,4.4vw,72px);margin-top:8px;letter-spacing:-.015em;line-height:.98}
+.wt__clock{grid-area:clock;text-shadow:var(--ink-shadow);align-self:center}
+.wt__digits{display:flex;align-items:flex-start;font-size:clamp(70px,11vw,170px);line-height:1;height:1.06em;font-variant-numeric:tabular-nums;letter-spacing:0}
+.wt__d{position:relative;display:block;width:.57em;height:1.06em;overflow:hidden}
+.wt__din{position:absolute;inset:0;display:block;text-align:center;line-height:1.06;will-change:transform}
+.wt__colon{display:block;width:.3em;text-align:center;line-height:1;opacity:.9}
+.wt__digits{filter:drop-shadow(0 2px 16px rgba(0,0,0,.38))}
+.wt__digits *{text-shadow:none}
+.wt__part{font-size:clamp(20px,2.1vw,32px);font-style:italic;letter-spacing:0;margin-top:10px;opacity:.95}
+.wt__bottle{grid-area:bottle;position:relative;display:flex;justify-content:center;align-self:end;height:100%;max-height:56svh}
+.wt__bottlebox{position:relative;display:block;height:100%;max-height:54svh;will-change:transform;filter:brightness(var(--bb,1)) saturate(var(--bs,1))}
+.wt__bottlebox img{display:block;height:100%;width:auto;max-height:54svh}
+.wt__rim{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;mix-blend-mode:screen}
+.wt__glow{position:absolute;left:50%;top:50%;width:150%;aspect-ratio:1;translate:-50% -50%;border-radius:50%;background:radial-gradient(circle,var(--wine,#fff) 0,transparent 62%);opacity:.5;mix-blend-mode:soft-light;transition:background .8s}
+.wt__cardcol{grid-area:card;justify-self:end;align-self:center;width:100%;max-width:660px;--pw:clamp(400px,51.75svh,620px);display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.wt__faces{width:100%;display:grid;justify-items:end;align-items:center;will-change:transform}
+.wt__faces>*{grid-area:1/1}
+
+.wt__pair{position:relative;justify-self:end;align-self:center;visibility:hidden;opacity:0;margin:0;width:fit-content;max-width:100%;line-height:0;box-shadow:0 30px 60px -20px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.14)}
+.wt__pair img{display:block;width:auto;height:auto;max-width:100%;max-height:62svh}
+.wt__pair--photo img{aspect-ratio:560/595;object-fit:cover;object-position:top} /* shows the top 595 rows only, which crops out the arrow baked into the corner of the photos */
+/* INSTAGRAM POST TEMPLATE for the slider cards. Everything scales with --s (post width / 340px), set by main.js,
+   so the posts, their text and the player can be resized by changing --pw alone. All three posts share one height. */
+.igp{width:min(var(--pw),100%);height:calc(var(--s,1) * 171px + var(--pw) * 1.134);display:flex;flex-direction:column;justify-self:end;align-self:center;position:relative;margin:0;background:#000;border-radius:calc(14px * var(--s,1));overflow:hidden;box-shadow:0 30px 60px -24px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.1);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;font-size:calc(12.5px * var(--s,1));line-height:1.38;color:#f5f5f5;text-align:left}
+.igp__head{flex:none;display:flex;align-items:center;gap:calc(9px * var(--s,1));padding:calc(9px * var(--s,1)) calc(12px * var(--s,1))}
+.igp__ring{flex:none;width:calc(34px * var(--s,1));height:calc(34px * var(--s,1));border-radius:50%;padding:2px;background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);display:grid;place-items:center}
+.igp__ring img{width:100%;height:100%;border-radius:50%;background:#000;border:2px solid #000;padding:3px;object-fit:contain}
+.igp__user{font-weight:600;font-size:calc(13px * var(--s,1))}
+.igp__dots{margin-left:auto;display:flex;gap:calc(3px * var(--s,1))}.igp__dots i{width:calc(3.5px * var(--s,1));height:calc(3.5px * var(--s,1));border-radius:50%;background:#f5f5f5}
+.igp__media{position:relative;display:block;flex:1 1 0;min-height:0;overflow:hidden;line-height:0}
+.igp__media img{width:100%;height:100%;max-height:none;object-fit:cover;object-position:50% 0;display:block;user-select:none;-webkit-user-drag:none}
+/* Pairing cards are tall pictures in a wide post: each side continues the card's own edge colour so the card blends into the post */
+.igp__media--tall{background:#000}
+.igp__media--tall::before,.igp__media--tall::after{content:"";position:absolute;top:0;bottom:0;width:50%}
+.igp__media--tall::before{left:0;background:var(--pl,#000)}
+.igp__media--tall::after{right:0;background:var(--pr,#000)}
+.igp__media--tall img{position:relative;z-index:1;object-fit:contain;object-position:50% 50%}
+.igp__tile{background:linear-gradient(165deg,var(--a,#8a9356),var(--b,#2f3418));display:flex;flex-direction:column;justify-content:space-between;align-items:center;text-align:center;padding:7% 9%;font-family:var(--serif);line-height:1.1}
+.igp__tile::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 35%,rgba(255,255,255,.16),transparent 62%);pointer-events:none}
+.igp__tile>*{position:relative;z-index:1}
+.igp__tile-top{font-size:calc(var(--pw) * .03);letter-spacing:.26em;text-transform:uppercase;opacity:.85}
+.igp__tile h3{font-size:calc(var(--pw) * .1);font-weight:400;line-height:1.02;text-wrap:balance}
+.igp__tile-strap{font-style:italic;font-size:calc(var(--pw) * .046);opacity:.92}
+.igp__actions{flex:none;display:flex;align-items:center;gap:calc(13px * var(--s,1));padding:calc(9px * var(--s,1)) calc(12px * var(--s,1)) 2px}
+.igp__actions button{width:calc(24px * var(--s,1));height:calc(24px * var(--s,1));display:grid;place-items:center;padding:0;position:relative}
+.igp__actions svg{width:calc(24px * var(--s,1));height:calc(24px * var(--s,1));fill:none;stroke:#f5f5f5;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:stroke .2s,fill .2s;overflow:visible}
+.igp__actions .sp{margin-left:auto}
+.igp.is-liked .igp__heart svg{fill:#ff3040;stroke:#ff3040}
+.igp__likes{flex:none;padding:2px calc(12px * var(--s,1)) 0;font-weight:600}
+.igp__caption{flex:none;padding:calc(4px * var(--s,1)) calc(12px * var(--s,1)) calc(13px * var(--s,1))}
+.igp__caption b{font-weight:600}
+.igp__caption p+p{margin-top:calc(4px * var(--s,1))}
+#cSub{color:#c9c9c9}
+.igp__facts{list-style:none;margin:calc(6px * var(--s,1)) 0 0;padding:0;display:grid;gap:2px;color:#d8d8d8}
+.igp__facts b{color:var(--gold-text)}
+.igp__cta{display:block;margin-top:calc(10px * var(--s,1));padding:calc(11px * var(--s,1)) 0;text-align:center;background:var(--red);color:#fff;border-radius:calc(8px * var(--s,1));font-size:calc(11.5px * var(--s,1));font-weight:600;letter-spacing:.18em;text-transform:uppercase;transition:background .3s,color .3s}
+.igp__cta:hover,.igp__cta:focus-visible{background:#fff;color:#000}
+.igp__pop{position:absolute;width:88px;height:88px;margin:-44px 0 0 -44px;pointer-events:none;z-index:4;filter:drop-shadow(0 6px 18px rgba(0,0,0,.45))}
+.wt__cta{display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:8px;flex-wrap:wrap;transition:opacity .5s}
+.wt__cta .wt__hint{margin:0;font-size:15px;letter-spacing:.2em;opacity:1;text-shadow:0 1px 8px rgba(0,0,0,.9),0 0 2px rgba(0,0,0,.8)}.wt__cta.is-playing .wt__hint{font-size:15px}.wt__play::before{inset:0}
+/* ## reviewed: glass buttons, card player, slider section mobile block (read in full) */
+.wt button,.wt a,.wt [role=slider]{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.wt__play::before{display:none!important}
+/* glass button (Uiverse dexter-st style, in the CI red): dark body, stacked inner highlights, red light rising from the base on hover/press */
+.wt__playme,.wt__play{--glass-hue:348deg;--glass-t:.4s;--glass-r:999px;position:relative;isolation:isolate;border:1px solid rgba(255,255,255,.14);background-color:#12100d;color:#fff;
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.2),inset 0 2px 2px rgba(255,255,255,.15),inset 0 4px 4px rgba(255,255,255,.1),inset 0 8px 8px rgba(255,255,255,.05),inset 0 16px 16px rgba(255,255,255,.05),0 -1px 1px rgba(0,0,0,.02),0 -2px 2px rgba(0,0,0,.03),0 -4px 4px rgba(0,0,0,.05),0 -8px 8px rgba(0,0,0,.06),0 -16px 16px rgba(0,0,0,.08);
+  transition:box-shadow var(--glass-t),border-color var(--glass-t),background-color var(--glass-t),opacity .4s,scale .4s,transform .25s}
+.wt__playme::before,.wt__play::before{content:"";position:absolute;inset:-4px;border-radius:inherit;pointer-events:none;z-index:-1;background-image:linear-gradient(0deg,rgba(0,0,0,.27),rgba(0,0,0,.67));
+  box-shadow:0 -8px 8px -6px transparent inset,0 -16px 16px -8px transparent inset,1px 1px 1px rgba(255,255,255,.13),2px 2px 2px rgba(255,255,255,.07),-1px -1px 1px rgba(0,0,0,.13),-2px -2px 2px rgba(0,0,0,.07);transition:box-shadow var(--glass-t)}
+.wt__playme::after,.wt__play::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;
+  background-image:linear-gradient(0deg,#fff,hsl(var(--glass-hue),100%,58%),hsla(var(--glass-hue),100%,50%,.5) 8%,transparent);
+  -webkit-mask-image:linear-gradient(0deg,#fff,transparent);mask-image:linear-gradient(0deg,#fff,transparent);transition:opacity var(--glass-t),filter var(--glass-t)}
+.wt__playme{border-radius:999px;display:inline-flex;align-items:center;gap:12px;padding:10px 26px 10px 20px;font-family:var(--serif);font-size:12px;letter-spacing:.3em;text-transform:uppercase}
+.wt__playme svg{width:13px;height:13px;fill:#e8e8e8;filter:drop-shadow(0 0 2px rgba(255,255,255,.6));animation:glass-flicker 2s linear infinite .5s;transition:fill var(--glass-t),filter var(--glass-t)}
+.wt__playme .ltr{display:inline-block;color:rgba(255,255,255,.55);animation:glass-letter 2s ease-in-out infinite;animation-delay:calc(var(--i)*.08s);transition:color var(--glass-t),text-shadow var(--glass-t)}
+.wt__playme .sp{display:inline-block;width:.5em}
+@keyframes glass-letter{50%{text-shadow:0 0 3px rgba(255,255,255,.55);color:#fff}}
+@keyframes glass-flicker{50%{opacity:.35}}
+@keyframes glass-breathe{50%{border-color:hsla(var(--glass-hue),100%,62%,.7)}}
+.wt__playme:hover,.wt__playme:focus-visible,.wt__play:hover{border-color:hsla(var(--glass-hue),100%,70%,.45);background:#12100d}
+.wt__playme:hover::before,.wt__playme:focus-visible::before,.wt__play:hover::before{box-shadow:0 -8px 8px -6px rgba(255,255,255,.67) inset,0 -16px 16px -8px hsla(var(--glass-hue),100%,55%,.35) inset,1px 1px 1px rgba(255,255,255,.13),2px 2px 2px rgba(255,255,255,.07),-1px -1px 1px rgba(0,0,0,.13),-2px -2px 2px rgba(0,0,0,.07)}
+.wt__playme:hover::after,.wt__playme:focus-visible::after,.wt__play:hover::after{opacity:1}
+.wt__playme:hover svg,.wt__play:hover svg{fill:#fff;filter:drop-shadow(0 0 3px hsl(var(--glass-hue),100%,62%)) drop-shadow(0 -4px 6px rgba(0,0,0,.6));animation:none}
+.wt__playme:hover .ltr{color:#fff}
+.wt__playme:active,.wt__play:active{border-color:hsla(var(--glass-hue),100%,75%,.7);background-color:hsla(var(--glass-hue),55%,18%,.7)}
+.wt__playme:active::after,.wt__play:active::after{opacity:1;filter:brightness(180%)}
+.wt__playme:active .ltr{animation:none;text-shadow:0 0 1px hsla(var(--glass-hue),100%,90%,.9)}
+.wt__cta.is-playing .wt__playme{opacity:0;scale:.9;pointer-events:none;position:absolute;visibility:hidden}
+.wt__cta.is-playing .wt__hint{opacity:.85}
+.rm .wt__playme .ltr,.rm .wt__playme svg,.rm .wt__play.is-nudge,.rm .wt__play.is-nudge svg{animation:none}
+.wt__play.is-nudge{animation:none}.wt__play.is-nudge svg{animation:glass-flicker 2s linear infinite .5s}
+.wt__hint{margin-bottom:12px}
+@media (min-width:900px){
+  .igp{height:calc(var(--s,1) * 120px + var(--pw) * .895)}
+  .igp__tile{padding:4% 8%}
+  .igp__tile-top{font-size:calc(var(--pw) * .027)}
+  .igp__tile h3{font-size:calc(var(--pw) * .074)}
+  .igp__tile-strap{font-size:calc(var(--pw) * .036)}
+}
+@media (max-width:899px){
+  #wtOcc .igp__media img{height:108%;object-position:50% 0!important}   /* the photos have an arrow baked into the bottom corner; this pushes it out of view */
+}
+/* CARD PLAYER (under the posts), same width as the posts */
+.wt__player{width:min(var(--pw),100%);background:#000;border-radius:calc(14px * var(--s,1));padding:calc(9px * var(--s,1)) calc(14px * var(--s,1)) calc(5px * var(--s,1));box-shadow:0 24px 50px -24px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.1);position:relative}
+.wt__pbar{position:relative;height:calc(16px * var(--s,1));cursor:pointer;touch-action:none;margin-bottom:2px}
+.wt__pbar::before{content:"";position:absolute;left:0;right:0;top:50%;height:2px;margin-top:-1px;background:rgba(255,255,255,.28);border-radius:2px}
+.wt__pticks{position:absolute;left:0;right:0;top:50%;height:0;pointer-events:none}
+.wt__pticks i{position:absolute;top:-3px;width:1px;height:6px;background:rgba(255,255,255,.22)}
+.wt__pticks i.wine{top:-5px;height:10px;background:rgba(255,255,255,.42)}
+.wt__pfill{position:absolute;left:0;top:50%;height:2px;margin-top:-1px;background:#fff;border-radius:2px;width:0}
+.wt__pknob{position:absolute;top:50%;left:0;width:calc(13px * var(--s,1));height:calc(13px * var(--s,1));margin:calc(-6.5px * var(--s,1)) 0 0 calc(-6.5px * var(--s,1));border-radius:50%;background:#fff;box-shadow:inset 0 0 0 calc(4px * var(--s,1)) #d6d6d6,0 0 0 0 rgba(255,255,255,.4);transition:box-shadow .25s}
+.wt__pbar:hover .wt__pknob,.wt__pbar:focus-visible .wt__pknob{box-shadow:inset 0 0 0 calc(4px * var(--s,1)) #d6d6d6,0 0 0 6px rgba(255,255,255,.18)}
+.wt__pbtns{display:flex;align-items:center;justify-content:space-between}
+.wt__pbtn{position:relative;width:calc(36px * var(--s,1));height:calc(36px * var(--s,1));border-radius:50%;display:grid;place-items:center;color:#fff;transition:background .25s,transform .25s}
+.wt__pbtn:hover{background:rgba(255,255,255,.1)}.wt__pbtn.wt__play:hover{background:#12100d}
+.wt__pbtn:active{transform:scale(.9)}
+.wt__pbtn svg{width:calc(22px * var(--s,1));height:calc(22px * var(--s,1));fill:currentColor;overflow:visible}
+.wt__play svg{width:calc(26px * var(--s,1));height:calc(26px * var(--s,1))}
+.wt__play .i-play{display:none}
+.wt__play.is-paused .i-play{display:block}.wt__play.is-paused .i-pause{display:none}
+.wt__pheart svg{transform-origin:50% 55%;transition:fill .15s}
+.wt__pheart.is-liked svg{fill:#ff3040}
+.pulse-ring{position:absolute;inset:3px;border-radius:50%;border:2px solid #ff3040;pointer-events:none}
+.wt__pmenuwrap{position:relative}
+.wt__pmenu{position:absolute;right:0;bottom:calc(100% + 8px);min-width:calc(140px * var(--s,1));background:#1a1a1a;border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:5px;box-shadow:0 18px 40px -12px rgba(0,0,0,.7);z-index:5}
+.wt__pmenu[hidden]{display:none}
+.wt__pmenu button{display:block;width:100%;text-align:left;padding:9px 12px;border-radius:7px;font:inherit;font-size:calc(13px * var(--s,1));color:#e8e8e8}
+.wt__pmenu button:hover{background:rgba(255,255,255,.1)}
+.wt__pmenu button.is-on{color:#fff}.wt__pmenu button.is-on::after{content:" \2713";color:var(--gold-text)}
+.rm .wt__player{display:none}
+.wt__slider{grid-area:slider;position:relative;padding:0 14px;margin-top:20px}
+.wt__hint{text-align:center;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:#fff;opacity:.8;margin-bottom:14px;text-shadow:var(--ink-shadow);transition:opacity .5s}
+.wt__track{position:relative;height:44px;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+.wt__track:active{cursor:grabbing}
+.wt__track::before{content:"";position:absolute;left:0;right:0;top:50%;height:2px;background:rgba(255,255,255,.4);translate:0 -50%}
+.wt__fill{position:absolute;left:0;top:50%;height:2px;background:#fff;translate:0 -50%;width:0}
+.wt__ticks{position:absolute;inset:0;pointer-events:none}
+.wt__ticks i{position:absolute;top:50%;width:1px;height:10px;background:rgba(255,255,255,.55);translate:0 -50%}
+.wt__knob{position:absolute;top:50%;left:0;translate:-50% -50%;min-width:78px;height:38px;padding:0 14px;border-radius:19px;background:var(--red);border:1px solid rgba(255,255,255,.7);font-size:16px;letter-spacing:.04em;font-variant-numeric:tabular-nums;box-shadow:0 6px 22px rgba(0,0,0,.35);z-index:2;touch-action:none}
+.wt__knob:focus-visible{outline:2px solid #fff;outline-offset:4px}
+.wt__stops{position:relative;height:46px;margin-top:0}
+.stop{position:absolute;top:0;translate:-50% 0;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;padding:6px 10px;color:#fff;opacity:.7;text-shadow:var(--ink-shadow);transition:opacity .4s}
+.stop b{font-weight:400;font-size:15px;letter-spacing:.06em}
+.stop small{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;white-space:nowrap}
+.stop.is-on{opacity:1}
+.stop--pair b{width:9px;height:9px;margin:4px 0 5px;border:1px solid #fff;border-radius:50%;padding:0;font-size:0;transition:background .3s,scale .3s}
+.stop--pair.is-on b{background:#fff;border-bottom:1px solid #fff;scale:1.3}
+.stop--pair small{display:none}
+.stop.is-on b{border-bottom:1px solid #fff}
+
+
+/* SERVING SUGGESTIONS */
+.wines-head{text-align:center;padding:clamp(80px,14vh,150px) var(--pad) clamp(50px,8vh,90px)}
+.wines-head h2,.events h2,.find h2,.wt__head h2{text-wrap:balance}
+.wines-head h2{font-size:clamp(28px,4.4vw,64px);margin-top:16px}
+.split{position:relative;height:100svh;overflow:hidden;background:var(--bg)}
+.split__line{position:absolute;left:50%;top:0;bottom:0;width:1px;background:linear-gradient(transparent,rgba(255,255,255,.18) 22%,rgba(255,255,255,.18) 78%,transparent);z-index:6;pointer-events:none}
+/* ## reviewed: scenes use the poster look: dark base, soft vertical curtain bands, one warm glow per wine */
+.scene{position:absolute;top:0;height:100%;width:50%;overflow:hidden;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:84px clamp(20px,4vw,64px) 40px;will-change:transform}
+.scene--l{left:0}.scene--r{right:0}
+.scene::before{content:"";position:absolute;inset:-24px;pointer-events:none;filter:blur(7px);
+  background:
+    radial-gradient(ellipse 46% 40% at var(--gx,70%) 56%,rgba(var(--g),.62),transparent 72%),
+    repeating-linear-gradient(90deg,rgba(var(--g),0) 0,rgba(var(--g),.30) 5%,rgba(var(--g),.08) 10%,rgba(var(--g),0) 13%);
+  -webkit-mask-image:linear-gradient(180deg,transparent 6%,#000 34%,#000 62%,transparent 94%);mask-image:linear-gradient(180deg,transparent 6%,#000 34%,#000 62%,transparent 94%)}
+.scene::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(0,0,0,.75),transparent 62%);pointer-events:none}
+.scene__ghost{position:absolute;left:50%;top:50%;translate:-50% -50%;font-size:clamp(70px,11vw,190px);line-height:.9;text-align:center;color:rgba(255,255,255,.09);width:120%;pointer-events:none;white-space:normal}
+.scene__bottle{position:relative;z-index:2;height:38svh;width:auto;margin-bottom:22px;filter:drop-shadow(0 22px 26px rgba(0,0,0,.45));animation:float 7s ease-in-out infinite}
+@keyframes float{0%,100%{translate:0 0}50%{translate:0 -10px}}
+.scene__body{position:relative;z-index:2;max-width:470px}
+.scene__body h3{font-size:clamp(28px,3vw,46px);margin:10px 0 4px}
+.scene__strap{font-style:italic;opacity:.9;margin-bottom:12px}
+.scene__text{font-size:16px;opacity:.9;max-width:42ch;margin:0 auto 16px}
+.scene__pair{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:12px}
+.scene__pair li+li::before{content:"";display:inline-block;width:4px;height:4px;border-radius:50%;background:currentColor;opacity:.6;margin-right:18px;vertical-align:middle}
+.scene__award{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:#f1e3b8;margin-bottom:20px}
+.scene .eyebrow{color:rgba(255,255,255,.75)}
+
+/* EVENTS */
+.events{text-align:center;padding:clamp(90px,16vh,170px) var(--pad)}
+.events h2{font-size:clamp(28px,4.2vw,60px);max-width:24ch;margin:16px auto 0}
+.ig{display:grid;grid-template-columns:repeat(3,minmax(0,400px));gap:clamp(18px,3vw,48px);justify-content:center;margin:clamp(44px,7vh,80px) auto clamp(44px,7vh,72px);max-width:1360px;perspective:1400px;text-align:left}
+.ig__card{will-change:transform}
+.ig__card:nth-child(2){margin-top:clamp(24px,5vw,72px)}
+.ig__inner{position:relative;border-radius:16px;overflow:hidden;background:#000;box-shadow:0 30px 60px -24px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.08);transform-style:preserve-3d;cursor:default;--gx:50%;--gy:30%}
+.ig__inner img{width:100%;height:auto;display:block;user-select:none;-webkit-user-drag:none}
+.ig__heart{position:absolute;width:96px;height:96px;margin:-48px 0 0 -48px;pointer-events:none;z-index:3;filter:drop-shadow(0 6px 18px rgba(0,0,0,.4))}
+.events__btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+/* FIND */
+.find{background:var(--bg);color:#fff;align-items:center;display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(30px,6vw,90px);padding:clamp(70px,11vh,130px) var(--pad)}
+.find .eyebrow{color:var(--gold-text)}
+.find h2{font-size:clamp(28px,3.6vw,52px);margin:14px 0 18px}
+.find__addr{color:var(--grey);margin-bottom:26px}
+.form{display:grid;gap:18px;align-content:start}
+.form__row{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.form label{display:grid;gap:6px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#5a5248}
+.form input,.form textarea{font:inherit;font-size:17px;letter-spacing:0;text-transform:none;color:var(--bg);background:transparent;border:0;border-bottom:1px solid #b9b2a6;padding:8px 0;border-radius:0;resize:vertical}
+.form input:focus,.form textarea:focus{outline:0;border-color:var(--red)}
+.form .btn{justify-self:start;margin-top:6px}
+.form__thanks{font-size:22px;color:var(--red)}
+.foot{text-align:center;padding:60px var(--pad) 48px;display:grid;gap:8px;justify-items:center}
+.foot img{height:86px;width:auto;margin-bottom:10px}
+.foot__small{font-size:12px;color:var(--grey);letter-spacing:.08em}
+
+/* MOBILE */
+@media (max-width:899px){
+  body{font-size:17px}
+  .nav__links{display:none}.nav__burger{display:block}
+  .nav__logo img{height:46px}
+  .hero__img{-webkit-mask-image:none;mask-image:none;height:52svh;overflow:hidden}
+  .hero__img img{height:100%;width:100%;object-fit:cover;object-position:62% 50%}
+  .hero__text{padding-top:26px}
+  /* phone: heading, then the time under it, then the bottle on the left with a big card on the right (they may overlap), then the slider */
+  .wt__inner{grid-template-columns:1fr;grid-template-rows:none;grid-template-areas:"head" "clock" "stage" "slider";gap:10px 0;padding-top:92px;padding-bottom:36px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  .wt__head{margin-top:8px}
+  .wt__head h2{font-size:clamp(30px,8.6vw,40px)}
+  .wt__clock{display:flex;flex-direction:column;align-items:flex-start;gap:0}
+  .wt__digits{font-size:clamp(58px,19vw,84px);line-height:1}
+  .wt__part{margin:2px 0 0;font-size:18px}
+  .wt__bottle,.wt__cardcol{grid-area:stage}
+  .wt__bottle{justify-self:start;align-self:center;width:34%;height:auto;max-height:none;z-index:2;pointer-events:none;margin-left:-2%}
+  .wt__bottlebox{height:auto;max-height:none;width:100%}
+  .wt__bottlebox img{width:100%;height:auto;max-height:none}
+  .wt__cardcol{justify-self:end;align-self:center;width:72%;max-width:none;--pw:72vw;align-items:flex-end;z-index:1;margin-right:-8px}
+  .wt__faces{justify-items:end}
+  .igp{justify-self:end}
+  .stop small{display:none}
+  .stop{padding:6px 4px}
+  .stop--pair{top:24px}
+  .wt__stops{height:52px}
+  .split{height:100svh}
+  .scene{width:100%;left:0!important;right:auto!important;padding:78px 22px 28px}
+  .scene__bottle{height:30svh;margin-bottom:12px}
+  .scene__text{font-size:15px;margin-bottom:12px}
+  .scene__body h3{font-size:30px}
+  .split__line{display:none}
+  .find{grid-template-columns:1fr}
+  .form__row{grid-template-columns:1fr}
+}
+@media (max-height:760px) and (min-width:900px){
+  .scene__bottle{height:30svh}.scene__text{display:none}
+}
+
+@media (max-width:899px){
+  .ig{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:16px;margin-left:calc(var(--pad) * -1);margin-right:calc(var(--pad) * -1);padding:6px var(--pad) 22px;scrollbar-width:none;perspective:none}
+  .ig::-webkit-scrollbar{display:none}
+  .ig__card{flex:0 0 78%;scroll-snap-align:center}
+  .ig__card:nth-child(2){margin-top:0}
+}
+
+/* reduced motion: no pinning, stack the scenes */
+.rm .split{height:auto}
+.rm .scene{position:relative;width:100%;min-height:100svh;transform:none!important;left:auto;right:auto}
+.rm .split__line{display:none}
+.rm .hero__cue span{animation:none}
+.rm .scene__bottle{animation:none}
+
+/* ## reviewed: pour band and hero sub line (new in v4) */
+.hero__sub{font-size:clamp(15px,1.3vw,19px);opacity:.9;margin-top:18px}
+
+/* ## reviewed: wine scenes v2 (editorial). Gold kicker, huge two-tone name (roman + italic in the wine's own colour),
+   bottle in front on one side, copy on the other, then pairing, award and tasting note. Every tagline is exactly two lines. */
+.scene{display:block;padding:0;text-align:left}
+.scene .eyebrow{display:none}
+.scene__kicker{position:absolute;z-index:3;left:0;right:0;top:12%;text-align:center;font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--gold-text)}
+.scene__kicker::before,.scene__kicker::after{content:"";display:inline-block;width:26px;height:1px;background:currentColor;vertical-align:middle;margin:0 14px;opacity:.7}
+.scene__name{position:absolute;z-index:1;left:0;right:0;top:calc(12% + 26px);margin:0;padding:0 5%;text-align:center;font-weight:400;font-size:clamp(58px,7.4vw,128px);line-height:.88;letter-spacing:-.025em;color:#f2ede3;text-wrap:balance}
+.scene__name span,.scene__name em{display:block}
+.scene__name em{font-style:italic;letter-spacing:-.02em;color:color-mix(in srgb,rgb(var(--g)) 58%,#fff)}
+.scene__name--long span{font-size:.62em;letter-spacing:-.01em;line-height:1;margin-bottom:.04em}
+.scene__bottle{position:absolute;z-index:2;bottom:6%;height:60svh;width:auto;margin:0;filter:drop-shadow(0 26px 30px rgba(0,0,0,.55))}
+.scene--bl .scene__bottle{left:9%}.scene--br .scene__bottle{right:9%}
+.scene__body{position:absolute;z-index:3;bottom:9%;width:min(45%,330px);max-width:none;text-align:left}
+.scene--bl .scene__body{right:7%}.scene--br .scene__body{left:7%}
+.scene__strap{font-style:normal;text-transform:uppercase;letter-spacing:.04em;font-size:clamp(20px,2vw,31px);line-height:1.08;margin:0 0 14px;color:#f6f1e8;white-space:nowrap}
+.scene__strap em{font-style:italic;color:color-mix(in srgb,rgb(var(--g)) 58%,#fff)}
+.scene__text{font-size:15px;line-height:1.5;opacity:.82;max-width:32ch;margin:0 0 18px}
+.scene__pairing{font-size:11px;letter-spacing:.16em;text-transform:uppercase;line-height:1.6;margin:0 0 6px;opacity:.9}
+.scene__pairing b{display:block;font-weight:400;color:var(--gold-text);letter-spacing:.3em;font-size:10px;margin-bottom:2px}
+.scene__award{margin:0 0 20px;font-size:11px;letter-spacing:.26em;color:#f1e3b8;text-transform:uppercase}
+.scene__meta .btn{margin-top:14px;display:block;text-align:center;padding:14px 10px;letter-spacing:.12em}
+.btn--dl{white-space:nowrap;letter-spacing:.16em;font-size:12px;padding:14px 20px}
+.btn--dl::before{content:"\2193";margin-right:10px;font-size:1.05em}
+@media (max-width:899px){
+  .scene{display:grid;grid-template-rows:auto auto minmax(0,1fr) auto;grid-template-columns:47% 1fr;padding:84px 22px 28px;column-gap:6px;align-content:stretch}
+  .scene--br{grid-template-columns:1fr 47%}
+  .scene__kicker,.scene__name{position:static;grid-column:1/-1}
+  .scene__kicker{grid-row:1;margin-bottom:6px}
+  .scene__name{grid-row:2;font-size:clamp(50px,17vw,92px);padding:0}
+  .scene__name--long{font-size:clamp(46px,15.4vw,84px)}
+  .scene__bottle{position:relative;bottom:auto;left:auto!important;right:auto!important;grid-row:3;justify-self:center;align-self:end;height:100%;max-height:none;max-width:100%;object-fit:contain;margin:14px 0 0}
+  .scene--bl .scene__bottle{grid-column:1}.scene--br .scene__bottle{grid-column:2}
+  .scene__body{display:contents}
+  .scene__copy{grid-row:3;align-self:center;margin-top:14px;z-index:3}
+  .scene--bl .scene__copy{grid-column:2}.scene--br .scene__copy{grid-column:1}
+  .scene__strap{font-size:clamp(17px,5.3vw,24px)}
+  .scene__text{font-size:13.5px;line-height:1.45;margin:0;max-width:none}
+  .scene__meta{grid-row:4;grid-column:1/-1;z-index:3;padding-top:16px}
+  .scene__pairing{margin-bottom:4px}
+  .scene__award{margin-bottom:0}
+}
+
+/* ## reviewed: the pour post (v4). Red band, one feed post in the middle, real footage as the picture. */
+.pour{background:var(--bg);padding:clamp(110px,17vw,230px) var(--pad) clamp(100px,15vw,210px)}
+.pour__post{width:min(100%,480px);margin:0 auto;background:#000;border-radius:14px;overflow:hidden;box-shadow:0 30px 60px -24px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.1)}
+.pour__head{display:flex;align-items:center;gap:12px;padding:12px 14px;font-family:'Inter',system-ui,sans-serif;font-size:14px;color:#fff}
+.pour__head b{font-weight:600}
+.pour__avatar{width:34px;height:34px;border-radius:50%;padding:2px;background:conic-gradient(from 210deg,#f7a02f,#e0285c,#8a3ab9,#f7a02f);display:grid;place-items:center}
+.pour__avatar img{width:100%;height:100%;border-radius:50%;background:#000;object-fit:contain;padding:3px}
+.pour__dots{margin-left:auto;display:flex;gap:3px}.pour__dots i{width:4px;height:4px;border-radius:50%;background:#fff}
+.pour__media{position:relative;aspect-ratio:4/5;background:#000;overflow:hidden}
+.pour__media video{position:absolute;left:50%;top:50%;height:100%;width:auto;min-width:100%;translate:-50% -50%;object-fit:cover}
+.pour__bar{display:flex;align-items:center;gap:clamp(10px,3.4vw,20px);padding:12px 14px 4px;color:#fff;font-family:'Inter',system-ui,sans-serif;font-size:13px}
+.pour__bar span{display:inline-flex;align-items:center;gap:7px}
+.pour__bar svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.pour__bar em{font-style:normal;opacity:.85}
+.pour__save{margin-left:auto}
+.pour__cap{padding:6px 14px 16px;font-family:'Inter',system-ui,sans-serif;font-size:14px;line-height:1.4;color:#fff}
+.pour__cap b{font-weight:600;margin-right:4px}
+
+/* ## reviewed: picnic pour (video with the Rosé bottle composited in) */
+.pour__post--picnic{background:#000;border-radius:14px;overflow:hidden}
+.pour__stage{position:relative;aspect-ratio:3/4;background:#000}
+.pour__stage video,.pour__stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+
+/* ## reviewed: breathing room (v4). Bigger gaps between sections so the page reads as editorial. */
+.hero__text{padding-bottom:clamp(90px,14vh,170px)}
+.wines-head{padding-top:clamp(120px,20vh,230px);padding-bottom:clamp(90px,14vh,170px)}
+.events{padding-top:clamp(120px,20vh,230px);padding-bottom:clamp(120px,20vh,230px)}
+.find{padding-top:clamp(110px,17vh,200px);padding-bottom:clamp(110px,17vh,200px)}
+@media (max-width:899px){
+  .wt__inner{padding-bottom:clamp(110px,16vh,160px)}
+}
+
+/* ## reviewed: contact form as an Instagram DM (v4). Dark card like the feed posts, bubbles from 1659_wines, pill fields,
+   the IG gradient only as an accent (avatar ring and field focus), brand red for the send button. */
+.form--ig{width:min(100%,500px);justify-self:center;gap:0;background:#000;border-radius:18px;overflow:hidden;box-shadow:0 30px 60px -24px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.1);font-family:'Inter',system-ui,-apple-system,sans-serif;color:#fff}
+.dm__head{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.1)}
+.dm__avatar{width:40px;height:40px;border-radius:50%;padding:2px;background:conic-gradient(from 210deg,#f7a02f,#e0285c,#8a3ab9,#f7a02f);display:grid;place-items:center;flex:none}
+.dm__avatar img{width:100%;height:100%;border-radius:50%;background:#000;object-fit:contain;padding:4px}
+.dm__who{display:grid;line-height:1.25}.dm__who b{font-weight:600;font-size:15px}
+.dm__who small{font-size:12px;color:#a8a8a8;display:flex;align-items:center;gap:6px}
+.dm__who small::before{content:"";width:7px;height:7px;border-radius:50%;background:#3ddc84}
+.dm__dots{margin-left:auto;display:flex;gap:3px}.dm__dots i{width:4px;height:4px;border-radius:50%;background:#fff}
+.dm__thread{display:grid;gap:6px;justify-items:start;padding:22px 16px 10px}
+.dm__bubble{max-width:84%;margin:0;padding:11px 15px;border-radius:20px 20px 20px 6px;background:#262626;font-size:14.5px;line-height:1.38}
+.dm__fields{display:grid;gap:14px;padding:12px 16px 4px}
+.form--ig .form__row{gap:12px}
+.form--ig label,.form--ig .form__row>*{min-width:0}
+.form--ig input,.form--ig textarea{width:100%;min-width:0;box-sizing:border-box}
+.form--ig label{gap:7px;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:#8e8e8e}
+.form--ig input,.form--ig textarea{font:inherit;font-size:15px;letter-spacing:0;text-transform:none;color:#fff;background:linear-gradient(#1c1c1c,#1c1c1c) padding-box,linear-gradient(#1c1c1c,#1c1c1c) border-box;border:1.5px solid transparent;border-radius:16px;padding:13px 16px;resize:none;transition:background .25s}
+.form--ig input::placeholder,.form--ig textarea::placeholder{color:#6b6b6b}
+.form--ig input:focus,.form--ig textarea:focus{outline:0;border-color:transparent;background:linear-gradient(#1c1c1c,#1c1c1c) padding-box,linear-gradient(100deg,#f58529,#dd2a7b,#8134af) border-box}
+.form--ig .dm__send{justify-self:stretch;width:100%;margin:4px 0 14px;display:flex;align-items:center;justify-content:center;gap:10px;border-radius:999px;padding:15px 22px;font-family:inherit}
+.dm__send svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.form--ig .form__thanks{justify-self:end;margin:6px 16px 22px;padding:11px 16px;border-radius:20px 20px 6px 20px;background:var(--red);color:#fff;font-size:14.5px}
+.form--ig .form__row{grid-template-columns:1fr}  /* one field per line on every screen, like the phone DM */
+@media (max-width:899px){.find{grid-template-columns:1fr}}
+
+/* ## reviewed: one dark ground and one section rhythm (v4). Every section sits on var(--bg); the sky and vignette fade into it
+   at the top and bottom, so no seams. Section padding comes from one variable. */
+:root{--sp:clamp(64px,9vh,110px)}
+.wt__scene,.wt__vig{-webkit-mask-image:linear-gradient(180deg,transparent 0,rgba(0,0,0,.08) 5%,rgba(0,0,0,.3) 11%,rgba(0,0,0,.65) 18%,#000 26%,#000 70%,rgba(0,0,0,.65) 80%,rgba(0,0,0,.25) 90%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,rgba(0,0,0,.08) 5%,rgba(0,0,0,.3) 11%,rgba(0,0,0,.65) 18%,#000 26%,#000 70%,rgba(0,0,0,.65) 80%,rgba(0,0,0,.25) 90%,transparent 100%)}
+.hero__text{padding-bottom:var(--sp)}
+.pour{padding:var(--sp) var(--pad)}
+.wines-head{padding-top:var(--sp);padding-bottom:var(--sp)}
+.events{padding-top:var(--sp);padding-bottom:var(--sp)}
+.find{grid-template-columns:1fr;justify-items:center;padding-top:var(--sp);padding-bottom:var(--sp)}
+@media (max-width:899px){.wt__inner{padding-bottom:var(--sp)}}
+
+
+/* SAUVIGNON BLANC SPLASH: a sticky frame inside a tall section; the section height is the scroll length */
+.splash{position:relative;height:100svh;background:#050705}
+.splash.is-live{height:620svh}
+.splash__pin{position:sticky;top:0;height:100svh;overflow:hidden}
+.splash__pin::before{content:"";position:absolute;left:0;right:0;top:0;height:18vh;z-index:2;pointer-events:none;background:linear-gradient(var(--bg),rgba(0,0,0,0))}
+.splash__frame{display:block;width:100%;height:100%;border:0;background:#050705}
+.rm .splash.is-live{height:100svh}
+/* ## reviewed (2026-10-22): glow and map rules removed, DM form single column, splash added */
+
+
+/* word-mask text motion: each word sits in a clipped line box (padded so descenders and italic overhang are not cut) */
+.wm{display:inline-block;overflow:hidden;vertical-align:top;padding:.1em .06em .22em;margin:-.1em -.06em -.22em}
+.wm__i{display:inline-block;will-change:transform}
+
+/* DESKTOP: 280px between sections, larger gold lines, larger wine copy */
+@media (min-width:900px){
+  :root{--sp:140px}
+  .hero__text{padding-bottom:140px}
+  .splash{margin-top:140px;margin-bottom:140px}
+  .wt__inner{padding-bottom:140px}
+  .wines-head,.events,.find{padding-top:140px;padding-bottom:140px}
+  .foot{padding-top:140px}
+  .eyebrow,.hero__line{font-size:clamp(16px,1.35vw,22px);letter-spacing:.3em}
+  .hero__line--big{font-size:clamp(30px,5vw,72px);letter-spacing:0}
+  .hero__sub{font-size:clamp(18px,1.5vw,24px)}
+  .scene__kicker{font-size:clamp(15px,1.2vw,19px)}
+  .scene__kicker::before,.scene__kicker::after{width:34px}
+}
+/* ## reviewed (2026-10-22): spacing, desktop type sizes and word-mask classes added. Wine scene copy sizes and positions are back to the original v4 values. */
+
+/* desktop slider: Play me under the card player, hint under the bottle, no pairing dots */
+.wt__playrow{width:min(var(--pw),100%);display:flex;justify-content:center;margin-top:6px}
+.wt__cardcol.is-playing .wt__playme{opacity:0;scale:.9;pointer-events:none;position:absolute;visibility:hidden}
+@media (min-width:900px){
+  .stop--pair{display:none}
+}
+
+/* endless animations only run while their section is on screen */
+.wt:not(.is-in) .wt__grain{animation-play-state:paused}
+.hero:not(.is-in) .hero__cue span{animation-play-state:paused}
+
+/* statement section (moved out of the hero): centred on its own screen between the fruit scene and the slider */
+.statement{display:grid;place-content:center;justify-items:center;text-align:center;min-height:70svh;padding:var(--sp) var(--pad)}
+.statement .hero__line--big{max-width:none}
+
+/* phone-only helpers stay hidden on desktop (their phone styles live in scratch/mobile/C.css) */
+.wt__fplay,.wt__playtext,.wt__wname{display:none}
+
+
+/* EQUAL BOTTLES: the four bottle photos have different amounts of empty space around the glass, so at the same image height the
+   wines looked different sizes. --k scales each photo so the visible bottle matches the Sweet Red one; --pb is its empty space at the
+   bottom, used to keep every bottle standing on the same line. (measured from the image alpha, 2026-10-22) */
+@media (min-width:900px){
+  .scene{--bu:60svh}
+  .scene__bottle{height:calc(var(--bu) * var(--k,1));bottom:calc(6svh + .003 * var(--bu) - var(--pb,.003) * var(--k,1) * var(--bu))}
+}
+@media (max-height:760px) and (min-width:900px){
+  .scene{--bu:30svh}
+}
+@media (max-width:899px){
+  /* max-width off: the empty sides of the wider photos may spill over the text column, only the glass is visible */
+  /* --bh is the smallest bottle space across the four phone scenes (px, set by main.js), so every wine gets the same bottle height even though the text under each one is a different length */
+  .scene__bottle{height:calc(var(--bh,100%) * var(--k,1));max-width:none;object-fit:fill;translate:0 calc((var(--pb,.003) - .003 / var(--k,1)) * 100%)}
+  .is-measuring .scene__bottle{height:100%!important}
+}
+/* ## reviewed (2026-10-22): equal bottle sizes in the four wine scenes */
+
+/* ## phone banner: the gold figure stays on the left and overlaps the arch; one arch at a time (occasion photo + the full-quality bottle, sized with the same --k/--pb factors as the wine scenes) fades through the four wines. */
+.hero__phone{display:none}
+@media (max-width:899px){
+  .hero__img{display:none}
+  .hero__phone{display:flex;align-items:flex-end;justify-content:center;width:100%;max-width:560px;margin:0 auto;padding:84px 0 0;position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  /* figure: crop x 840..1160, y 320..880 of the 2000 x 1028 artwork; his feet line up with the bottle base */
+  .hp__man{position:absolute;left:0;bottom:-10px;width:31%;z-index:2;aspect-ratio:320/560;background-repeat:no-repeat;background-size:100% 100%;filter:drop-shadow(0 0 14px rgba(201,169,106,.25))}
+  .hp__arches{flex:0 0 72%;position:relative;aspect-ratio:4/5;margin-bottom:14px}
+  .hp__a{position:absolute;inset:0;opacity:0;transition:opacity .55s ease;pointer-events:none}
+  .hp__a.is-on{opacity:1;transition-delay:.55s}
+  .hp__ph{position:absolute;inset:0;border-radius:999px 999px 0 0;background-size:auto 108%;background-position:50% 0;box-shadow:inset 0 -60px 60px -40px rgba(0,0,0,.45)}
+  .hp__ring{position:absolute;inset:-9px -9px 0;border:1px solid rgba(201,169,106,.4);border-bottom:0;border-radius:999px 999px 0 0}
+  .hp__b{position:absolute;left:50%;bottom:-8px;height:calc(86% * var(--k));width:auto;max-width:none;transform:translate(-50%,calc((var(--pb) - .003 / var(--k)) * 100%));filter:drop-shadow(0 14px 18px rgba(0,0,0,.45))}
+}
+.rm .hp__a{transition:none}
+.rm .hp__a.is-on{transition-delay:0s}
+
+/* ## desktop banner: the one wide picture is cut into four arches and the gold figure so each can move on its own (positions are the picture's own coordinates, 2000 x 1028) */
+.hero__desk{position:relative;aspect-ratio:2000/1028;width:100%}
+.hd__t,.hd__man{position:absolute;display:block;background-repeat:no-repeat}
+.hd__t{top:calc(95/1028*100%);left:calc(var(--x)/2000*100%);width:calc(410/2000*100%);aspect-ratio:410/840;background-size:487.8% auto;background-position:calc(var(--x)/1590*100%) calc(95/188*100%)}
+.hd__man{left:calc(840/2000*100%);top:calc(320/1028*100%);width:calc(320/2000*100%);aspect-ratio:320/560;background-size:100% 100%}
+@media (max-width:899px){.hero__desk{display:none}}
+@media (min-width:900px){.hero{padding-top:clamp(36px,4.5vw,76px)}}
+
+/* ## phone rhythm: the gap between the last Facebook button and the enquiry form (2 x --sp, about 150px) is the gap Megan likes, so every other section break on phones now matches it */
+@media (max-width:899px){
+  .statement{min-height:0;padding-top:calc(var(--sp) * 2);padding-bottom:calc(var(--sp) * 2 - 100px)}
+  .hero + .statement{padding-top:calc(var(--sp) * 2 - 48px)}
+  .wines-head h2{margin-top:0}
+}
+
+/* ## desktop arch 1 is rebuilt from layers (new photo, full-quality bottle, caption) instead of cropped from the banner picture; positions are the old picture's own, as % of the 410 x 840 tile */
+.hd__live{background:none!important;container-type:inline-size}
+.hd__live>*{position:absolute;display:block}
+.hd__ring{left:1.2%;width:97.6%;top:1.2%;height:84.2%;border:1px solid rgba(201,169,106,.3);border-bottom:0;border-radius:999px 999px 0 0}
+.hd__ph{left:4.1%;width:91.5%;top:2.7%;height:82.6%;border-radius:999px 999px 0 0;background-size:cover;background-position:50% 25%;box-shadow:inset 0 -40px 50px -30px rgba(0,0,0,.4)}
+.hero__img .hd__bot{left:19%;width:62%;top:25.7%;height:67.5%;max-width:none;object-fit:fill;filter:drop-shadow(0 12px 16px rgba(0,0,0,.4))}
+.hd__time{left:0;right:0;top:91%;text-align:center;font-style:italic;font-size:5.9cqw;line-height:1.2;color:#ece6d8;white-space:nowrap}
+.hd__name{left:0;right:0;top:95.3%;text-align:center;font-size:3.8cqw;letter-spacing:.2em;text-transform:uppercase;color:#a89d86;white-space:nowrap}
+@media (max-width:899px){.hd__live{display:none}}
+
+/* ## desktop banner height: keep the banner and the welcome headline on the first screen (the new banner is taller than the old one) */
+@media (min-width:900px){.hero__img{max-width:min(1700px,max(760px,calc((100svh - 300px) * 1.9455)))}}
+
+/* ## desktop banner captions: all four are live text at one size (the baked-in picture captions were small and soft); tiles 2 to 4 keep the picture but stop above the old caption rows */
+.hd__live--bg .hd__bg{left:0;top:0;width:100%;height:90.48%;background-repeat:no-repeat;background-size:487.8% auto;background-position:calc(var(--x)/1590*100%) calc(95/268*100%)}
+.hd__time{top:90%!important;font-size:9cqw!important;letter-spacing:.01em;color:#f3eee2!important}
+.hd__name{top:96.6%!important;font-size:5.5cqw!important;letter-spacing:.16em!important;color:#b9ad93!important}
+
+/* ## desktop nav: heavier, larger type; the hover is a liquid blob (see main.js) that stretches from link to link behind the text */
+@media (min-width:900px){
+  .nav__links{position:relative;isolation:isolate;gap:4px;font-size:clamp(13.5px,1vw,15.5px);letter-spacing:.2em;font-weight:500;-webkit-font-smoothing:antialiased}
+  .nav__links a{position:relative;z-index:1;opacity:1;color:#fff;padding:11px clamp(14px,1.4vw,22px)}   /* the blob is the CI red, so the white text stays white on top of it */
+  .nav__cta{margin-left:clamp(8px,1vw,16px);border:0}
+  .nav__goo{position:absolute;inset:0;z-index:0;pointer-events:none}
+  .nav__goo.is-goo{filter:url(#navGoo)}
+  .nav__goo i{position:absolute;left:0;top:0;width:0;height:0;border-radius:999px;background:var(--red);opacity:0;will-change:transform,opacity}
+}
+
+/* ## desktop wine scenes: copy sized up so it reads at a glance */
+@media (min-width:900px){
+  .scene__body{width:min(47%,500px)}
+  .scene__strap{font-size:clamp(26px,2.5vw,44px);margin-bottom:18px}
+  .scene__text{font-size:clamp(17px,1.3vw,23px);line-height:1.5;opacity:.9;max-width:34ch;margin-bottom:22px}
+  .scene__pairing{font-size:clamp(13px,.98vw,17px);letter-spacing:.14em;margin-bottom:10px}
+  .scene__pairing b{font-size:clamp(11.5px,.85vw,14px);margin-bottom:4px}
+  .scene__award{font-size:clamp(13px,.98vw,17px);margin-bottom:24px}
+  .btn--dl{font-size:clamp(13px,.95vw,16px);padding:clamp(15px,1.2vw,20px) clamp(22px,1.6vw,30px)}
+  .scene__meta .btn{padding:clamp(15px,1.2vw,20px) 12px}
+}
