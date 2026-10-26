@@ -585,3 +585,60 @@ main,.foot{position:relative}
   .btn--dl{font-size:clamp(13px,.95vw,16px);padding:clamp(15px,1.2vw,20px) clamp(22px,1.6vw,30px)}
   .scene__meta .btn{padding:clamp(15px,1.2vw,20px) 12px}
 }
+
+/* ## reviewed */
+/* VERSION C (phones only): scene on top (clock, wine name, big bottle, slider), cards in their own block underneath with the player. Desktop is untouched. */
+.wt__wname,.wt__cue{display:none}
+@media (max-width:899px){
+  .mC .wt__inner{height:auto;min-height:0;grid-template-columns:1fr;grid-template-rows:auto;grid-template-areas:"head" "clock" "bottle" "wname" "slider" "card";gap:0;padding-top:102px;padding-bottom:var(--sp)}
+  .mC .wt__head{margin:0}
+  .mC .wt__head .eyebrow{display:none}
+  .mC .wt__head h2{font-family:var(--serif);font-size:12px;font-weight:400;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-text);margin:0}
+  .mC .wt__clock{display:block;margin:6px 0 0}
+  .mC .wt__digits{font-size:68px;line-height:.95}
+  .mC .wt__part{margin:6px 0 0;font-size:19px;line-height:1.25;opacity:.95}
+  .mC .wt__wname{display:flex;grid-area:wname;align-items:center;justify-content:center;gap:12px;margin:2px 0 18px;font-family:var(--serif);font-size:13px;letter-spacing:.26em;white-space:nowrap;text-transform:uppercase;color:#fff;text-shadow:var(--ink-shadow);text-align:center}
+  .mC .wt__wname::before,.mC .wt__wname::after{content:"";flex:0 1 36px;min-width:10px;height:1px;background:var(--gold-text);opacity:.8}
+  .mC .wt__bottle{grid-area:bottle;width:auto;height:clamp(230px,calc(100svh - 450px),420px);max-height:none;justify-self:center;align-self:center;margin:8px 0;z-index:1}
+  .mC .wt__bottlebox{height:100%;width:auto;max-height:none}
+  .mC .wt__bottlebox img{height:100%;width:auto;max-height:none}
+  .mC .wt__slider{display:flex;flex-direction:column;grid-area:slider;margin-top:0;padding:0 6px}
+  .mC .wt__cta{order:2;margin:8px 0 0;justify-content:center}  /* "Slide me" sits under the slider, where the dots were */
+  .mC .wt__cta .wt__playme{display:none!important}
+  .mC .wt__hint{font-size:13px!important;letter-spacing:.34em!important;opacity:.9!important;text-align:center}
+  .mC .wt__track,.mC .wt__stops{margin-left:40px;margin-right:40px}
+  .mC .wt__stops{height:26px}
+  .mC .wt__stops{display:none}
+  .mC .wt__cardcol{grid-area:card;width:100%;--pw:min(92vw,420px);justify-self:center;align-self:start;margin:22px 0 0;align-items:center}
+  .mC .wt__faces{justify-items:center}
+  .mC .igp{justify-self:center}
+  /* floating Play me / pause pill while the cards are on screen */
+  .mC .wt__fplay{display:none}
+  .mC.is-cards .wt__fplay{display:inline-flex;position:fixed;left:50%;translate:-50% 0;bottom:max(14px,env(safe-area-inset-bottom,0px));z-index:30;white-space:nowrap}
+  /* nav slides away while reading, comes back on the next scroll up */
+  .mC .nav{transition:transform .35s ease,background .4s,backdrop-filter .4s}
+  .mC.nav-hidden .nav{transform:translateY(-110%)}
+  /* "Slide me": shimmering letters, nudging arrows, and the knob wiggles until someone touches it */
+  .mC .wt__hint{display:flex;align-items:center;justify-content:center;gap:14px;color:#fff}
+  .mC .wt__hint .hl{white-space:nowrap}
+  .mC .wt__hint .ltr{display:inline-block;color:rgba(255,255,255,.6);animation:glass-letter 1.8s ease-in-out infinite;animation-delay:calc(var(--i)*.09s)}
+  .mC .wt__hint .sp{display:inline-block;width:.5em}
+  .mC .wt__hint::before,.mC .wt__hint::after{font-size:20px;letter-spacing:0;line-height:1;color:#fff;animation:slidearrow 1.6s ease-in-out infinite}
+  .mC .wt__hint::before{content:"\2039";animation-name:slidearrowL}
+  .mC .wt__hint::after{content:"\203A"}
+  @keyframes slidearrow{0%,100%{translate:0 0;opacity:.5}50%{translate:6px 0;opacity:1}}
+  @keyframes slidearrowL{0%,100%{translate:0 0;opacity:.5}50%{translate:-6px 0;opacity:1}}
+  .mC:not(.wt-touched) .wt__knob{animation:knobwiggle 2.4s ease-in-out infinite}
+  @keyframes knobwiggle{0%,55%,100%{margin-left:0}70%{margin-left:22px}85%{margin-left:0}92%{margin-left:10px}}
+  .mC.wt-touched .wt__hint .ltr{animation:none;color:rgba(255,255,255,.75)}
+  .mC.wt-touched .wt__hint::before,.mC.wt-touched .wt__hint::after{animation:none;opacity:.6}
+  /* Sauvignon Blanc glass is pale, so give it a little more depth */
+  .mC .wt__bottlebox.is-sauv img{filter:contrast(1.1) saturate(1.2)}
+  /* "Play me" text under the cards, same look as "Slide me" */
+  .mC .wt__playtext{display:flex;align-items:center;justify-content:center;gap:14px;align-self:center;margin:10px 0 0;padding:10px 18px;font-family:var(--serif);font-size:13px;letter-spacing:.34em;text-transform:uppercase;color:#fff;text-shadow:var(--ink-shadow)}
+  .mC .wt__playtext .hl{white-space:nowrap}
+  .mC .wt__playtext .ltr{display:inline-block;color:rgba(255,255,255,.6);animation:glass-letter 1.8s ease-in-out infinite;animation-delay:calc(var(--i)*.09s)}
+  .mC .wt__playtext .sp{display:inline-block;width:.5em}
+  .mC .wt__playtext svg{width:12px;height:12px;fill:#fff;animation:glass-flicker 1.6s ease-in-out infinite}
+  .mC .wt__playtext.is-playing .ltr,.mC .wt__playtext.is-playing svg{animation:none;color:rgba(255,255,255,.75)}
+}
